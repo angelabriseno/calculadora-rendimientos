@@ -1,0 +1,163 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+    background-color: #E5E5E5;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0em;
+}
+
+header{
+    display: flex;
+    width: 100%;
+    height: 10%;
+    padding: 1%;
+    align-items: center;
+    background-color: #528346;
+}
+
+header img{
+    position: relative;
+    display: flex;
+    width: auto;
+    height: 80%;
+}
+
+header h1{
+    margin-top: 1%;
+    margin-left: 2%;
+    color: whitesmoke;
+}
+
+.inputs-cont{
+    display: flex;
+    width: 98%;
+    height: 45%;
+    background-color: rgb(38, 36, 36);
+    padding: 0 2%;
+}
+
+.inputs-cont h1{
+    color: whitesmoke;
+}
+
+.informacion{
+    flex: 0.6;
+    display: inline-block;
+    height: 100%;
+    align-items: justify;
+}
+
+.resultados-cont{
+    flex: 0.4;
+    position: relative;
+    height: 100%;
+    width: auto;
+    align-items: center;
+    justify-content: center; /* Centra los elementos horizontalmente */
+}
+
+.informacion label{
+    font-size: 1.2rem;
+    padding: 0;
+    width: 40%;
+    color: whitesmoke;
+}
+
+.informacion input{
+    margin: 0.5% 0 0.5% 1.5%;
+    padding: 0;
+    width: 60%;
+    height: 1.5rem;
+    box-sizing: border-box;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.tempo{
+    border-width: 0;
+    display: flex;
+    padding: 0;
+    margin-left: -1%;
+}
+
+.tempo select {
+    display: inline-block;
+    margin-left: 1%;
+    width: 60%; /* Ajusta el ancho según sea necesario */
+}
+
+.informacion button{
+    margin-top: 1%;
+    width: 200px;
+    height: 50px;
+    color: white;
+    font-size: 1.389vw;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #528346;
+    border-radius: 24px;
+    align-items: center;
+    justify-content: center;
+}
+
+.informacion button:hover{
+    transform: scale(1.08);
+    background: #70866a;
+}
+
+
+
+.resultados-cont h2 {
+    color:beige
+
+}
+
+.Lblr-tag{
+    position: relative;
+    width: 20rem;
+    height: 4rem;
+    padding: 1rem;
+    margin: 1rem;
+    
+    background-color:#528346 ;
+    color:beige ;
+    font-size: 2rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border-radius: 1rem;
+    text-align:center;
+    align-self: center;
+
+}
+
+
+.Lblfinal-tag{ position: relative;
+    width: 20rem;
+    height: 4rem;
+    padding: 1rem;
+    margin: 1rem;
+    
+    background-color:#528346 ;
+    color:beige ;
+    font-size: 2rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border-radius: 1rem;
+    text-align:center;
+    align-self: center;
+
+}
+
+.Lblr-tag h2, .Lblfinal-tag h2{
+    font-size: 0.8rem;
+}

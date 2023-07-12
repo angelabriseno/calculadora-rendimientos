@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora de Anualidades</title>
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body> 
+
+  <header>
+    <img src="logo cochinodinero1.png">
+    <h1>Calculadora de interés compuesto</h1>
+  </header>
+  <div class="inputs-cont">
+    <form id="informacion" class="informacion">
+      <label for="Txtk">Monto inicial:</label>
+      <input type="number" id="Txtk" name="Txtk" step="any" required><br>
+
+      <label for="Txti">Tasa de interés (%):</label>
+      <input type="number" id="Txti" name="Txti" step="0.01" required><br>
+
+      <label for="Txttempo">Elige la Temporalidad:</label>
+      <fieldset id="temporalidad" class="tempo">
+        <select id="ComboBox1" name="ComboBox1">
+          <option value="Mensual">Mensual</option>
+          <option value="Bimestral">Bimestral</option>
+          <option value="Trimestral">Trimestral</option>
+          <option value="Cuatrimestral">Cuatrimestral</option>
+          <option value="Semestral">Semestral</option>
+          <option value="Anual">Anual</option>
+        </select>
+      </fieldset>
+
+      <label for="Txtn">Número de períodos:</label>
+      <input type="number" id="Txtn" name="Txtn"  required><br>
+
+      <label for="Txtanual">Depósitos:</label>
+      <input type="number" id="Txtanual" name="Txtanual" step="any"><br>
+
+      <button type="submit">Calcular</button>
+    </form>
+
+    <div class="resultados-cont" style="display: none;">
+      <h2>Resultados:</h2>
+
+      <div class="Lblr-tag">
+
+        <h2>Monto final:</h2>
+        <p id="Lblr"></p>
+
+
+      </div>
+
+
+
+      <div class="Lblfinal-tag" >
+
+        <h2>Intereses generados:</h2>
+        <p id="Lblfinal"></p>
+
+
+      </div>
+      
+  
+    </div>
+  </div>
+
+  
+
+  <div id="contenedor" style="max-height: 600px;">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <script>
+    document.getElementById('informacion').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      //se verifica si la gráfica existe para eliminarla
+      // y dejar espacio para la nueva gráfica vacía
+      var canvas = document.getElementById("myChart");
+      if (canvas) {
+        canvas.remove();
+      }
+      canvas = document.createElement("canvas");
+      canvas.id = "myChart";
+      document.getElementById("contenedor").appendChild(canvas);
+
+
+      //se hacen visibles los contenedores de resultados
+      //solo si no estaban visibles previamente
+      if (document.querySelector(".resultados-cont").style.display === "none") {
+        document.querySelector(".resultados-cont").style.display = "block";
+      } 
+
+      //se declaran las variables y un dataframe vacío
+      //el dataframe se utilizará para la creación de la gráfica
+      var k, i, j, n, a, r, u, tr, interesesonly, anualidad, intereses, result;
+      var dataframe = {
+        labels: [],
+        capital: [],
+        aportaciones: [],
+        intereses: [],
+        montofinal: []
+      };
+
+      intereses = 0;
+      interesesonly = 0;
+      result = 0;
+      anualidad = 0;
+
+      k = parseFloat(document.getElementById('Txtk').value);
+      r = parseFloat(document.getElementById('Txti').value) / 100;
+      n = parseFloat(document.getElementById('Txtn').value);
+      a = parseFloat(document.getElementById('Txtanual').value);
+
+      if (isNaN(a) || a === null) {
+        a = 0;
+      } else {
+        a = a;
+      }
+
+      // Cálculo de la variable tr
+      var t = document.getElementById('ComboBox1').value;
+      if (t === "Mensual") {
+        tr = r / 12;
+      } else if (t === "Bimestral") {
+        tr = r / 6;
+      } else if (t === "Trimestral") {
+        tr = r / 4;
+      } else if (t === "Cuatrimestral") {
+        tr = r / 3;
+      } else if (t === "Semestral") {
+        tr = r / 2;
+      } else {
+        tr = r;
+      }
+
+      if (isNaN(k) || isNaN(r) || isNaN(n) || t === "") {
+        alert("Falta información, verificar");
+      } else {
+        if (a === 0) {
+          // Bloque de interés compuesto sin abono en periodos (fórmula de interés compuesto)
+          for (i = 1; i <= n; i++) {
+            a = 0;
+            interesesonly = interesesonly + (k * tr);
+            k = k + (k * tr);
+            result = k;
+            capital = k;
+
+            dataframe.labels.push(i);
+            dataframe.capital.push(capital);
+            dataframe.aportaciones.push(a);
+            dataframe.intereses.push(interesesonly);
+            dataframe.montofinal.push(result);
+          }
+        } else if (k === a && a !== 0) {
+          for (i = 1; i <= n; i++) {
+            k = parseFloat(document.getElementById('Txtk').value);
+            capital = k + (k * i);
+            intereses = 0;
+            u = i - 1;
+
+            for (j = 1; j <= n - u; j++) {
+              intereses = intereses + (k * tr);
+              k = k + (k * tr);
+              anualidad = k;
+            }
+
+            if (i === 1) {
+              result = anualidad + a;
+              interesesonly = intereses + interesesonly;
+            } else {
+              result = anualidad + result;
+              interesesonly = intereses + interesesonly;
+            }
+
+            dataframe.labels.push(i);
+            dataframe.capital.push(capital);
+            dataframe.aportaciones.push(parseFloat(document.getElementById('Txtanual').value) * n);
+            dataframe.intereses.push(interesesonly);
+            dataframe.montofinal.push(result);
+          }
+        } else if (k !== a && a !== 0) {
+          for (i = 1; i <= n; i++) {
+            interesesonly = interesesonly + (k * tr);
+            k = k + (k * tr) + a;
+            result = k;
+            capital = k;
+
+            dataframe.labels.push(i);
+            dataframe.capital.push(capital);
+            dataframe.aportaciones.push(0);
+            dataframe.intereses.push(interesesonly);
+            dataframe.montofinal.push(result);
+          }
+        }
+
+        // Resultados
+        var Lblr = document.getElementById('Lblr');
+        var Lblfinal = document.getElementById('Lblfinal');
+
+        Lblr.textContent = result.toFixed(2);
+        Lblfinal.textContent = interesesonly.toFixed(2);
+
+        // Gráficas
+        var options = {
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            x: {
+              beginAtZero: true,
+              stacked: true,
+              ticks: {
+                callback: function(value, index, values) {
+                  return value.toLocaleString();
+                }
+              }
+            },
+            y: {
+              beginAtZero: true,
+              stacked: true,
+              ticks: {
+                callback: function(value, index, values) {
+                  return value.toLocaleString();
+                }
+              }
+            }
+          }
+        };
+
+        // Configurar los datos para la gráfica apilada
+        var data = {
+          labels: dataframe.labels,
+          datasets: [
+            {
+              label: 'Capital',
+              data: dataframe.capital,
+              backgroundColor: 'rgba(82, 131, 70, 0.5)'
+            },
+            {
+              label: 'Intereses',
+              data: dataframe.intereses,
+              backgroundColor: 'rgba(102, 153, 102, 0.5)'
+            }
+          ]
+        };
+
+        // Crear la gráfica apilada
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: data,
+          options: options
+        });
+      }
+    });
+  </script>
+</body>
+</html>
